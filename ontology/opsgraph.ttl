@@ -1,0 +1,138 @@
+@prefix rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl:  <http://www.w3.org/2002/07/owl#> .
+@prefix xsd:  <http://www.w3.org/2001/XMLSchema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix ops:  <https://example.org/opsgraph/ontology#> .
+
+<https://example.org/opsgraph/ontology> a owl:Ontology ;
+    rdfs:label "OpsGraph cloud-operations ontology" ;
+    rdfs:comment "Models services, environments, deployments, alerts, incidents, root causes and runbooks for incident diagnosis. Symptoms are SKOS concepts." .
+
+# ---------------------------------------------------------------- classes
+ops:OperationalEvent a owl:Class ;
+    rdfs:label "Operational event" .
+
+ops:Incident a owl:Class ;
+    rdfs:subClassOf ops:OperationalEvent ;
+    rdfs:label "Incident" ;
+    rdfs:comment "A service degradation or outage that required investigation." .
+
+ops:Deployment a owl:Class ;
+    rdfs:subClassOf ops:OperationalEvent ;
+    rdfs:label "Deployment" ;
+    rdfs:comment "A release of a service version into an environment." .
+
+ops:Alert a owl:Class ;
+    rdfs:subClassOf ops:OperationalEvent ;
+    rdfs:label "Alert" ;
+    rdfs:comment "A monitoring alert raised during an incident." .
+
+ops:Service a owl:Class ;
+    rdfs:label "Service" ;
+    rdfs:comment "A deployable software service." .
+
+ops:Environment a owl:Class ;
+    rdfs:label "Environment" ;
+    rdfs:comment "A runtime environment such as prod-eu or qa-1." .
+
+ops:RootCause a owl:Class ;
+    rdfs:label "Root cause" ;
+    rdfs:comment "A diagnosed underlying cause of one or more incidents." .
+
+ops:Runbook a owl:Class ;
+    rdfs:label "Runbook" ;
+    rdfs:comment "A documented remediation procedure." .
+
+# ---------------------------------------------------------------- object properties
+ops:dependsOn a owl:ObjectProperty ;
+    rdfs:label "depends on" ;
+    rdfs:domain ops:Service ;
+    rdfs:range ops:Service ;
+    rdfs:comment "Direct runtime dependency. Not declared transitive; queries traverse explicit edges." .
+
+ops:affectsService a owl:ObjectProperty ;
+    rdfs:label "affects service" ;
+    rdfs:domain ops:Incident ;
+    rdfs:range ops:Service .
+
+ops:hasEnvironment a owl:ObjectProperty ;
+    rdfs:label "has environment" ;
+    rdfs:domain ops:Incident ;
+    rdfs:range ops:Environment .
+
+ops:followsDeployment a owl:ObjectProperty ;
+    rdfs:label "follows deployment" ;
+    rdfs:domain ops:Incident ;
+    rdfs:range ops:Deployment .
+
+ops:hasRootCause a owl:ObjectProperty ;
+    rdfs:label "has root cause" ;
+    rdfs:domain ops:Incident ;
+    rdfs:range ops:RootCause .
+
+ops:hasSymptom a owl:ObjectProperty ;
+    rdfs:label "has symptom" ;
+    rdfs:domain ops:Incident ;
+    rdfs:range skos:Concept .
+
+ops:raisedAlert a owl:ObjectProperty ;
+    rdfs:label "raised alert" ;
+    rdfs:domain ops:Incident ;
+    rdfs:range ops:Alert .
+
+ops:resolvedBy a owl:ObjectProperty ;
+    rdfs:label "resolved by" ;
+    rdfs:domain ops:RootCause ;
+    rdfs:range ops:Runbook .
+
+ops:deploymentOf a owl:ObjectProperty ;
+    rdfs:label "deployment of" ;
+    rdfs:domain ops:Deployment ;
+    rdfs:range ops:Service .
+
+ops:deployedTo a owl:ObjectProperty ;
+    rdfs:label "deployed to" ;
+    rdfs:domain ops:Deployment ;
+    rdfs:range ops:Environment .
+
+# ---------------------------------------------------------------- datatype properties
+ops:description a owl:DatatypeProperty ;
+    rdfs:label "description" ;
+    rdfs:domain ops:Incident ;
+    rdfs:range xsd:string .
+
+ops:severity a owl:DatatypeProperty ;
+    rdfs:label "severity" ;
+    rdfs:domain ops:Incident ;
+    rdfs:range xsd:string .
+
+ops:openedAt a owl:DatatypeProperty ;
+    rdfs:label "opened at" ;
+    rdfs:domain ops:Incident ;
+    rdfs:range xsd:dateTime .
+
+ops:deployedAt a owl:DatatypeProperty ;
+    rdfs:label "deployed at" ;
+    rdfs:domain ops:Deployment ;
+    rdfs:range xsd:dateTime .
+
+ops:version a owl:DatatypeProperty ;
+    rdfs:label "version" ;
+    rdfs:domain ops:Deployment ;
+    rdfs:range xsd:string .
+
+ops:tier a owl:DatatypeProperty ;
+    rdfs:label "tier" ;
+    rdfs:domain ops:Service ;
+    rdfs:range xsd:string .
+
+ops:category a owl:DatatypeProperty ;
+    rdfs:label "category" ;
+    rdfs:domain ops:RootCause ;
+    rdfs:range xsd:string .
+
+ops:alertName a owl:DatatypeProperty ;
+    rdfs:label "alert name" ;
+    rdfs:domain ops:Alert ;
+    rdfs:range xsd:string .

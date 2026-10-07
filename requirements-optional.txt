@@ -1,0 +1,3 @@
+# Better embeddings than the TF-IDF fallback (downloads ~90 MB model on first run).
+# Installing this switches the vector backend automatically (OPSGRAPH_BACKEND=auto).
+sentence-transformers>=2.7

@@ -1,0 +1,9 @@
+services:
+  api:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      OPSGRAPH_BACKEND: tfidf
+      # Optional local LLM: run Ollama on the host and uncomment
+      # OLLAMA_HOST: http://host.docker.internal:11434

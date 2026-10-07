@@ -1,0 +1,12 @@
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.ipynb_checkpoints/
+reports/*.json
+reports/*.md
+data/*.json
+data/*.ttl
+!data/gold_manual.json
+!reports/.gitkeep
+!data/.gitkeep

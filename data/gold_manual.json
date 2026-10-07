@@ -1,0 +1,145 @@
+[
+  {
+    "id": "manual-001",
+    "type": "service",
+    "group": "single",
+    "question": "Which service is directly affected by this incident?",
+    "gold": ["<affected-service-id>"]
+  },
+  {
+    "id": "manual-002",
+    "type": "deployment",
+    "group": "single",
+    "question": "Which deployment is associated with the affected service in this incident?",
+    "gold": ["<deployment-id>"]
+  },
+  {
+    "id": "manual-003",
+    "type": "alert",
+    "group": "single",
+    "question": "Which alert is associated with the affected service?",
+    "gold": ["<alert-id>"]
+  },
+  {
+    "id": "manual-004",
+    "type": "root_cause",
+    "group": "single",
+    "question": "What root cause is associated with the incident?",
+    "gold": ["<root-cause-id>"]
+  },
+  {
+    "id": "manual-005",
+    "type": "runbook",
+    "group": "single",
+    "question": "Which runbook is associated with the identified root cause?",
+    "gold": ["<runbook-id>"]
+  },
+  {
+    "id": "manual-006",
+    "type": "dependency",
+    "group": "multi",
+    "question": "Which services are connected through the dependency chain involved in this incident?",
+    "gold": [
+      "<service-id-1>",
+      "<service-id-2>"
+    ]
+  },
+  {
+    "id": "manual-007",
+    "type": "dependency",
+    "group": "multi",
+    "question": "Which services share a dependency with the service affected by this incident?",
+    "gold": [
+      "<service-id-1>",
+      "<service-id-2>"
+    ]
+  },
+  {
+    "id": "manual-008",
+    "type": "incident",
+    "group": "multi",
+    "question": "Which entities connect this incident to its underlying root cause?",
+    "gold": [
+      "<incident-id>",
+      "<service-id>",
+      "<root-cause-id>"
+    ]
+  },
+  {
+    "id": "manual-009",
+    "type": "deployment",
+    "group": "multi",
+    "question": "Which service and deployment are connected to the incident?",
+    "gold": [
+      "<service-id>",
+      "<deployment-id>"
+    ]
+  },
+  {
+    "id": "manual-010",
+    "type": "diagnosis",
+    "group": "multi",
+    "question": "Which service, dependency, and alert form the relevant diagnostic path for this incident?",
+    "gold": [
+      "<service-id>",
+      "<dependency-id>",
+      "<alert-id>"
+    ]
+  },
+  {
+    "id": "manual-011",
+    "type": "diagnosis",
+    "group": "multi",
+    "question": "Starting from the incident, which service does it affect and which dependency of that service is involved?",
+    "gold": [
+      "<service-id>",
+      "<dependency-id>"
+    ]
+  },
+  {
+    "id": "manual-012",
+    "type": "diagnosis",
+    "group": "multi",
+    "question": "Which service is affected, what root cause is associated with it, and which runbook addresses that root cause?",
+    "gold": [
+      "<service-id>",
+      "<root-cause-id>",
+      "<runbook-id>"
+    ]
+  },
+  {
+    "id": "manual-013",
+    "type": "diagnosis",
+    "group": "multi",
+    "question": "What is the relationship path from the incident to the affected service and from that service to its dependency?",
+    "gold": [
+      "<incident-id>",
+      "<service-id>",
+      "<dependency-id>"
+    ]
+  },
+  {
+    "id": "manual-014",
+    "type": "diagnosis",
+    "group": "multi",
+    "question": "Which alert, service, and root cause are connected to this incident?",
+    "gold": [
+      "<alert-id>",
+      "<service-id>",
+      "<root-cause-id>"
+    ]
+  },
+  {
+    "id": "manual-015",
+    "type": "diagnosis",
+    "group": "multi",
+    "question": "Which incident, affected service, dependency, root cause, and runbook form the complete investigation chain?",
+    "gold": [
+      "<incident-id>",
+      "<service-id>",
+      "<dependency-id>",
+      "<root-cause-id>",
+      "<runbook-id>"
+    ]
+  }
+]

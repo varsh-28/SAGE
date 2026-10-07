@@ -1,0 +1,21 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "OpsGraph: run full pipeline",
+      "type": "debugpy",
+      "request": "launch",
+      "module": "opsgraph.cli",
+      "args": ["all"],
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "OpsGraph: API (uvicorn)",
+      "type": "debugpy",
+      "request": "launch",
+      "module": "uvicorn",
+      "args": ["opsgraph.api:app", "--reload"],
+      "cwd": "${workspaceFolder}"
+    }
+  ]
+}

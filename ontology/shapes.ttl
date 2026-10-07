@@ -1,0 +1,116 @@
+@prefix sh:   <http://www.w3.org/ns/shacl#> .
+@prefix rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd:  <http://www.w3.org/2001/XMLSchema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix ops:  <https://example.org/opsgraph/ontology#> .
+@prefix :     <https://example.org/opsgraph/shapes#> .
+
+<https://example.org/opsgraph/shapes>
+    sh:declare [
+        sh:prefix "ops" ;
+        sh:namespace "https://example.org/opsgraph/ontology#"^^xsd:anyURI
+    ] .
+
+:IncidentShape a sh:NodeShape ;
+    sh:targetClass ops:Incident ;
+    sh:property [
+        sh:path ops:affectsService ; sh:class ops:Service ;
+        sh:minCount 1 ; sh:maxCount 1 ;
+        sh:message "Incident must affect exactly one Service."
+    ] ;
+    sh:property [
+        sh:path ops:hasEnvironment ; sh:class ops:Environment ;
+        sh:minCount 1 ; sh:maxCount 1 ;
+        sh:message "Incident must have exactly one Environment."
+    ] ;
+    sh:property [
+        sh:path ops:hasRootCause ; sh:class ops:RootCause ;
+        sh:minCount 1 ; sh:maxCount 1 ;
+        sh:message "Incident must have exactly one RootCause."
+    ] ;
+    sh:property [
+        sh:path ops:hasSymptom ; sh:class skos:Concept ;
+        sh:minCount 1 ;
+        sh:message "Incident must have at least one SKOS symptom."
+    ] ;
+    sh:property [
+        sh:path ops:description ; sh:datatype xsd:string ;
+        sh:minCount 1 ; sh:maxCount 1 ;
+        sh:message "Incident must have exactly one string description."
+    ] ;
+    sh:property [
+        sh:path ops:severity ; sh:in ( "SEV1" "SEV2" "SEV3" "SEV4" ) ;
+        sh:minCount 1 ; sh:maxCount 1 ;
+        sh:message "Severity must be one of SEV1..SEV4."
+    ] ;
+    sh:property [
+        sh:path ops:openedAt ; sh:datatype xsd:dateTime ;
+        sh:minCount 1 ; sh:maxCount 1
+    ] ;
+    sh:property [
+        sh:path ops:followsDeployment ; sh:class ops:Deployment ;
+        sh:maxCount 1
+    ] ;
+    sh:property [
+        sh:path ops:raisedAlert ; sh:class ops:Alert
+    ] .
+
+:ServiceShape a sh:NodeShape ;
+    sh:targetClass ops:Service ;
+    sh:property [
+        sh:path rdfs:label ; sh:datatype xsd:string ; sh:minCount 1
+    ] ;
+    sh:property [
+        sh:path ops:dependsOn ; sh:class ops:Service
+    ] ;
+    sh:sparql [
+        a sh:SPARQLConstraint ;
+        sh:message "A Service must not depend on itself." ;
+        sh:prefixes <https://example.org/opsgraph/shapes> ;
+        sh:select """
+            SELECT $this WHERE { $this ops:dependsOn $this . }
+        """
+    ] .
+
+:RootCauseShape a sh:NodeShape ;
+    sh:targetClass ops:RootCause ;
+    sh:property [
+        sh:path rdfs:label ; sh:datatype xsd:string ; sh:minCount 1
+    ] ;
+    sh:property [
+        sh:path ops:category ;
+        sh:in ( "database" "network" "configuration" "capacity" "deployment" "storage" ) ;
+        sh:minCount 1 ; sh:maxCount 1
+    ] ;
+    sh:property [
+        sh:path ops:resolvedBy ; sh:class ops:Runbook ;
+        sh:minCount 1 ; sh:maxCount 1 ;
+        sh:message "Every RootCause needs exactly one Runbook."
+    ] .
+
+:DeploymentShape a sh:NodeShape ;
+    sh:targetClass ops:Deployment ;
+    sh:property [
+        sh:path ops:deploymentOf ; sh:class ops:Service ;
+        sh:minCount 1 ; sh:maxCount 1
+    ] ;
+    sh:property [
+        sh:path ops:deployedTo ; sh:class ops:Environment ;
+        sh:minCount 1 ; sh:maxCount 1
+    ] ;
+    sh:property [
+        sh:path ops:version ; sh:datatype xsd:string ; sh:minCount 1
+    ] .
+
+:RunbookShape a sh:NodeShape ;
+    sh:targetClass ops:Runbook ;
+    sh:property [
+        sh:path rdfs:label ; sh:datatype xsd:string ; sh:minCount 1
+    ] .
+
+:AlertShape a sh:NodeShape ;
+    sh:targetClass ops:Alert ;
+    sh:property [
+        sh:path ops:alertName ; sh:datatype xsd:string ; sh:minCount 1
+    ] .
